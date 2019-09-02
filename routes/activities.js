@@ -67,6 +67,7 @@ router.get('/public/:time', jwtAuth, (req, res, next) => {
 router.post('/', [jwtAuth, jsonParser], (req, res, next) => {
     const { title, time, priority, description, isPublic } = req.body;
     const user_Id = req.user.id;
+    const createdBy = req.user.username
 
     if (!title || !time) {
         const err = new Error('Missing `title` or `time` in request body');
@@ -75,7 +76,7 @@ router.post('/', [jwtAuth, jsonParser], (req, res, next) => {
     }
 
 
-    const newActivity = { title, time, priority, description, isPublic, user_Id };
+    const newActivity = { title, time, priority, description, isPublic, user_Id, createdBy };
     return Activity.create(newActivity)
         .then(result => {
             res.status(201).json(result);
@@ -117,7 +118,7 @@ const { updatedActivity }= req.body;
         return next(err);
     }
 
-    Activity.findOneAndUpdate({ _id: id }, updatedActivity, {new: true})
+    Activity.findOneAndUpdate({ _id: id }, updatedActivity)
     .then(activity => {
         res.status(200).json(activity);
         })

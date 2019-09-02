@@ -10,7 +10,11 @@ const activitySchema = new mongoose.Schema({
     // tags: [{ type: String }], future feature
     // progress: { type: Number }, future feature
     // completed: { type: Boolean }, future feature <3
-    user_Id: { type: mongoose.Schema.Types.ObjectId }
+    user_Id: { 
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User" 
+    },
+    createdBy: { type: String }
 });
 
 activitySchema.set('timestamps', true);
